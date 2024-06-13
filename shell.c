@@ -1,35 +1,29 @@
 #!/bin/bash
 
-# Variabel untuk menyimpan jumlah total dan jumlah angka
-total=0
-count=0
+# Variabel untuk mengontrol perulangan
+should_run=true
 
-# Meminta pengguna untuk memasukkan jumlah angka yang ingin diproses
-echo "Berapa banyak angka yang ingin Anda masukkan?"
-read n
+# Fungsi untuk mengeksekusi perintah
+execute_command() {
+    eval "$@"
+}
 
-# Menggunakan perulangan for untuk membaca angka dari pengguna
-for ((i = 1; i <= n; i++))
-do
-    echo "Masukkan angka ke-$i:"
-    read num
+# Perulangan while untuk menjaga shell tetap berjalan
+while $should_run; do
+    # Menampilkan prompt
+    echo -n "osh> "
     
-    # Memeriksa apakah input adalah angka
-    if [[ $num =~ ^-?[0-9]+$ ]]; then
-        # Menambah angka ke total dan meningkatkan jumlah angka
-        total=$((total + num))
-        count=$((count + 1))
+    # Membaca input dari pengguna
+    read input
+
+    # Menggunakan if-else untuk memeriksa perintah 'exit'
+    if [[ "$input" == "exit" ]]; then
+        should_run=false
     else
-        echo "Input bukan angka. Silakan masukkan angka."
-        i=$((i - 1))  # Mengurangi counter untuk mengulangi input
+        # Menjalankan perintah menggunakan fungsi
+        execute_command $input
     fi
 done
 
-# Menghitung rata-rata
-if [ $count -ne 0 ]; then
-    average=$(echo "$total / $count" | bc -l)
-    echo "Jumlah total dari angka-angka adalah: $total"
-    echo "Rata-rata dari angka-angka adalah: $average"
-else
-    echo "Tidak ada angka yang valid dimasukkan."
-fi
+# Menampilkan pesan keluar
+echo "Shell exited."
