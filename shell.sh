@@ -5,7 +5,7 @@ should_run=true
 
 # Fungsi untuk mengeksekusi perintah
 execute_command() {
-    eval "$@"
+    $@
 }
 
 # Perulangan while untuk menjaga shell tetap berjalan
@@ -19,9 +19,9 @@ while $should_run; do
     # Menggunakan if-else untuk memeriksa perintah 'exit'
     if [[ "$input" == "exit" ]]; then
         should_run=false
-    else
+    elif [[ -n "$input" ]]; then
         # Menjalankan perintah menggunakan fungsi
-        execute_command "$input"
+        execute_command $input
     fi
 done
 
