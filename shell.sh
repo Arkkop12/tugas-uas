@@ -21,7 +21,7 @@ while $should_run; do
         should_run=false
     else
         # Menjalankan perintah menggunakan fungsi
-        execute_command $input
+        execute_command "$input"
     fi
 done
 
